@@ -7,40 +7,40 @@ import {
   Button,
   Header,
   Message,
-  Icon
+  Icon,
 } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
 class Login extends React.Component {
   state = {
-    email: "",
-    password: "",
+    email: "user@gmail.com",
+    password: "123456",
     errors: [],
-    loading: false
+    loading: false,
   };
 
-  displayErrors = errors =>
+  displayErrors = (errors) =>
     errors.map((error, i) => <p key={i}>{error.message}</p>);
 
-  handleChange = event => {
+  handleChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
-  handleSubmit = event => {
+  handleSubmit = (event) => {
     event.preventDefault();
     if (this.isFormValid(this.state)) {
       this.setState({ errors: [], loading: true });
       firebase
         .auth()
         .signInWithEmailAndPassword(this.state.email, this.state.password)
-        .then(signedInUser => {
+        .then((signedInUser) => {
           console.log(signedInUser);
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err);
           this.setState({
             errors: this.state.errors.concat(err),
-            loading: false
+            loading: false,
           });
         });
     }
@@ -49,7 +49,9 @@ class Login extends React.Component {
   isFormValid = ({ email, password }) => email && password;
 
   handleInputError = (errors, inputName) => {
-    return errors.some(error => error.message.toLowerCase().includes(inputName))
+    return errors.some((error) =>
+      error.message.toLowerCase().includes(inputName)
+    )
       ? "error"
       : "";
   };
